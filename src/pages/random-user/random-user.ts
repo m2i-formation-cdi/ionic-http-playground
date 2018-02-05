@@ -25,6 +25,22 @@ export class RandomUserPage {
 
   public userSelectedIndex;
 
+  public selectedGender = 'all';
+  public selectedCountryCodes = ['fr'];
+
+  public countries = [
+    {code: 'fr', label: 'France'},
+    {code: 'gb', label: 'Royaume unis'},
+    {code: 'us', label: 'Etats-unis'},
+    {code: 'ch', label: 'Suisse'},
+    {code: 'nz', label: 'Nouvelle Zélande'},
+    {code: 'nl', label: 'Hollande'},
+    {code: 'de', label: 'Allemagne'},
+    {code: 'dk', label: 'Danemark'},
+    {code: 'es', label: 'Espagne'},
+    {code: 'br', label: 'Brésil'},
+  ];
+
   public userList = [];
 
   constructor(public navCtrl: NavController, 
@@ -33,47 +49,46 @@ export class RandomUserPage {
   }
 
   ionViewDidLoad() {
-    this.http.get(this.url).subscribe(
-      (response) =>{
-        console.log(response);
-        console.log(response.json());
-        let data = response.json().results[0];
-        this.user.name = data.name.title + ' ' + data.name.first + ' ' + data.name.last;
-        this.user.image = data.picture.large;
-      }
-    );
-
-    this.loadUsers();
+    this.loadUsers( (data)=> {this.userList = data});
   }
 
-  loadUsers(){
-    this.http.get(this.url + '?results=10').subscribe(
+  loadUsers(callback){
+    let url = this.url + '?results=10'
+    url += '&gender='+ this.selectedGender;
+    url += '&nat='+ this.selectedCountryCodes.join(',');
+
+    this.http.get(url).subscribe(
       (response) =>{
-        this.userList = response.json().results;
+        let data = response.json().results;
+        callback(data);
       }
     );
   }
 
   loadMore(infiniteScroll){
-    this.http.get(this.url + '?results=10').subscribe(
-      (response) =>{
-        this.userList = this.userList.concat(response.json().results);
-        infiniteScroll.complete();
-      }
-    );
+    this.loadUsers( (data)=> {
+      this.userList = this.userList.concat(data);
+      infiniteScroll.complete();
+    });
   }
 
   refreshUsers(refresher){
-    this.http.get(this.url + '?results=10').subscribe(
-      (response) =>{
-        this.userList = response.json().results.concat(this.userList);
-        refresher.complete();
-      }
-    );
+    this.loadUsers( (data)=> {
+      this.userList = data.concat(this.userList);
+      refresher.complete();
+    });
   }
 
+  /**
+   * 
+   * @param pos Affichage du détails d'un utilisateur dans la liste
+   */
   displayUserInfo(pos){
     this.userSelectedIndex = pos;
+  }
+
+  changeCountry(code){
+    console.log(code);
   }
 
 }
