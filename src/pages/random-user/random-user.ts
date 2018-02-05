@@ -23,6 +23,8 @@ export class RandomUserPage {
     image: null
   };
 
+  public userSelectedIndex;
+
   public userList = [];
 
   constructor(public navCtrl: NavController, 
@@ -68,6 +70,10 @@ export class RandomUserPage {
         refresher.complete();
       }
     );
+  }
+
+  displayUserInfo(pos){
+    this.userSelectedIndex = pos;
   }
 
 }
