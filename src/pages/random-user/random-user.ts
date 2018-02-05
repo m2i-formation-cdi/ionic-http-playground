@@ -61,4 +61,13 @@ export class RandomUserPage {
     );
   }
 
+  refreshUsers(refresher){
+    this.http.get(this.url + '?results=10').subscribe(
+      (response) =>{
+        this.userList = response.json().results.concat(this.userList);
+        refresher.complete();
+      }
+    );
+  }
+
 }
