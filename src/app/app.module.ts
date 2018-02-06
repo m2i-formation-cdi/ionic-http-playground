@@ -1,3 +1,4 @@
+import { VelibPage } from './../pages/velib/velib';
 import { RandomUserPage } from './../pages/random-user/random-user';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -10,13 +11,18 @@ import { ListPage } from '../pages/list/list';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from '@angular/http';
+import { VelibMapPage } from '../pages/velib-map/velib-map';
+import { Geolocation } from '@ionic-native/geolocation';
+
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     ListPage,
-    RandomUserPage
+    RandomUserPage,
+    VelibPage,
+    VelibMapPage
   ],
   imports: [
     BrowserModule,
@@ -28,12 +34,15 @@ import { HttpModule } from '@angular/http';
     MyApp,
     HomePage,
     ListPage,
-    RandomUserPage
+    RandomUserPage,
+    VelibPage,
+    VelibMapPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Geolocation
    
   ]
 })

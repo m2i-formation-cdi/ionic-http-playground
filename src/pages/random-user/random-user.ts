@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {Http} from '@angular/http';
+import { Http } from '@angular/http';
 
 /**
  * Generated class for the RandomUserPage page.
@@ -16,7 +16,7 @@ import {Http} from '@angular/http';
 })
 export class RandomUserPage {
 
-  private url:string = "https://randomuser.me/api";
+  private url: string = "https://randomuser.me/api";
 
   public user = {
     name: '',
@@ -29,65 +29,65 @@ export class RandomUserPage {
   public selectedCountryCodes = ['fr'];
 
   public countries = [
-    {code: 'fr', label: 'France'},
-    {code: 'gb', label: 'Royaume unis'},
-    {code: 'us', label: 'Etats-unis'},
-    {code: 'ch', label: 'Suisse'},
-    {code: 'nz', label: 'Nouvelle Zélande'},
-    {code: 'nl', label: 'Hollande'},
-    {code: 'de', label: 'Allemagne'},
-    {code: 'dk', label: 'Danemark'},
-    {code: 'es', label: 'Espagne'},
-    {code: 'br', label: 'Brésil'},
+    { code: 'fr', label: 'France' },
+    { code: 'gb', label: 'Royaume unis' },
+    { code: 'us', label: 'Etats-unis' },
+    { code: 'ch', label: 'Suisse' },
+    { code: 'nz', label: 'Nouvelle Zélande' },
+    { code: 'nl', label: 'Hollande' },
+    { code: 'de', label: 'Allemagne' },
+    { code: 'dk', label: 'Danemark' },
+    { code: 'es', label: 'Espagne' },
+    { code: 'br', label: 'Brésil' },
   ];
 
   public userList = [];
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public http:Http) {
+    public http: Http) {
   }
 
   ionViewDidLoad() {
-    this.loadUsers( (data)=> {this.userList = data});
+    this.loadUsers((data) => { this.userList = data });
   }
 
-  loadUsers(callback){
+  loadUsers(callback) {
     let url = this.url + '?results=10'
-    url += '&gender='+ this.selectedGender;
-    url += '&nat='+ this.selectedCountryCodes.join(',');
+    url += '&gender=' + this.selectedGender;
+    url += '&nat=' + this.selectedCountryCodes.join(',');
 
     this.http.get(url).subscribe(
-      (response) =>{
+      (response) => {
         let data = response.json().results;
         callback(data);
       }
     );
   }
 
-  loadMore(infiniteScroll){
-    this.loadUsers( (data)=> {
+  loadMore(infiniteScroll) {
+    this.loadUsers((data) => {
       this.userList = this.userList.concat(data);
       infiniteScroll.complete();
     });
   }
 
-  refreshUsers(refresher){
-    this.loadUsers( (data)=> {
+  refreshUsers(refresher) {
+    this.loadUsers((data) => {
       this.userList = data.concat(this.userList);
       refresher.complete();
     });
   }
 
   /**
-   * 
-   * @param pos Affichage du détails d'un utilisateur dans la liste
+   * Affichage du détails d'un utilisateur dans la liste
+   * @param pos 
    */
-  displayUserInfo(pos){
+  displayUserInfo(pos) {
     this.userSelectedIndex = pos;
   }
 
-  changeCountry(code){
+  changeCountry(code) {
     console.log(code);
   }
 
